@@ -1,9 +1,12 @@
 PREDEF:
+  - preface.re
 
 CHAPS:
-  - roda-first.re
+  - chapter01.re
+  - chapter02.re
+  - chapter03.re
 
 APPENDIX:
 
 POSTDEF:
-
+  - postface.re
