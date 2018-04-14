@@ -15,8 +15,48 @@ HP@<fn>{hp}やソースコードのREADME@<fn>{readme}では、Rodaの事を"Rod
 
 この紹介の通り、Rodaはルーティング機能を提供するライブラリです。Model-View-Controller(以降MVC)パターンにおけるController部分の機能のみを提供しており、RailsのようにMVC全ての機能を提供しているわけではありません。
 
-Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります。実際、RodaはSinatraを参考に作られており、HP上にはSinatraとの比較についての説明が記載されています。
+Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります。実際、RodaはSinatraを参考に作られており、HP上にはSinatraとの比較についての説明が記載されています。SinatraとRodaの違いについては、1.3 Sinatra と Rodaで触れたいと思います。
 //footnote[sinatra][http://sinatrarb.com/]
+
+
+== Hello World!
+
+早速ですが、まずはRodaにさわってみましょう。ここでは、よくある「Hello, World!」と表示するだけのウェブアプリケーションを作ろうと思います。
+
+まずは、Rodaをインストールしましょう。
+
+//cmd{
+$ gem install roda
+//}
+
+これで準備は完了です。では、実際にRodaを使ってみましょう。
+
+RodaはRackベースのライブラリです。そのため、RodaでWebアプリケーションを作るには、Rackアプリを起動する為の設定ファイルが必要になるため、その設定ファイルを作成しましょう。ファイル名は、デフォルトのファイル名である"config.ru"という名前にします。
+
+//list[config.ru][config.ru]{
+#@mapfile(scripts/01/hello_world_1.rb)
+require "roda"
+
+class App < Roda
+  route do |r|
+    r.root do
+      "Hello World!"
+    end
+  end
+end
+
+
+run App.freeze.app
+//}
+
+ファイルが作成出来たら、ファイルがあるのと同じディレクトリで"rackup"コマンドを実行して、アプリケーションを起動してみましょう。
+
+//cmd{
+$ rackup
+//}
+
+
+最後に、ブラウザを起動し、"http://localhost:9292/"にアクセスしてくみてください。"Hello World!"と表示されれば成功です。簡単ですね。
 
 == SinatraとRoda
 
