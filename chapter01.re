@@ -144,6 +144,9 @@ Rodaの大きな特徴の一つに、プラグインシステムがあります�
 
 しかしこのシステムにより、不要な機能が読み込まれず、結果ライブラリの動作が高速になったり、何が問題があった際に確認すべきソースが少なくなったりと、少なくない恩恵があります。また、何か自分が独自に機能を追加したい場合も、プラグインとしてその機能を提供することで、簡単に機能を追加出来る、というメリットもあります。
 
+なお、Roda本体で提供しているプラグインについて、詳細に説明している資料は残念ながら今の所無いようです。しかし、API doc@{fn}{document}を見ると、どのようなmoduleがあるかが一覧で確認出来るので、そこから詳細を見てみるのがおすすめです。
+//footnote[document][http://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins.html]
+
 
 == パフォーマンス
 
@@ -188,12 +191,11 @@ rails-api                 1211.33        7.65%
 
 上位三つと比べると少々劣りますが、それでも十分速いのではないでしょうか。なお、比較対象にあげられているSinatraと比べると、3倍近い性能を出しています。
 
-
-もう一つ、TechEmpowerがやっているWeb Framework Benchmarks(https://www.techempower.com/benchmarks/)を見てみましょう。
+もう一つ、TechEmpowerがおこなっているWeb Framework Benchmarks(https://www.techempower.com/benchmarks/)を見てみましょう。
 
 これはRubyに限らず、様々なプログラミング言語のWebアプリケーションのフレームワークのパフォーマンス比較を行い、その結果を表示しているサイトです。ベンチマークは定期的に取得するようになっており、最新の結果(Round 15 / 2018-02-14)では、26のプログラミング言語の158ものフレームワークがベンチマークの対象になっています。
 
-ベンチマークは複数のパターン(JSONを返す、DBに対して一つSQLを実行する、等々)、DBも複数パターン(MySQL、PostgreSQL、MongoDB、等々)、APサーバも当然複数パターン(Puma、unicorn、等々)で結果を取得するようなっており、大変多岐に渡っています。
+ベンチマークは複数のパターン(JSONを返す、DBに対して一つSQLを実行する、等々)、DBも複数パターン(MySQL、PostgreSQL、MongoDB、等々)、アプリケーションサーバも当然複数パターン(Puma、unicorn、等々)で結果を取得するようなっており、大変多岐に渡っています。
 
 結果の全てを説明するのは紙面の都合上無理なので、ここではRubyの結果だけみていきましょう。なお、色々と面白い結果になっていると思うので、是非ともサイト上で結果の詳細を見てみることをおすすめします。
 
@@ -202,7 +204,7 @@ rails-api                 1211.33        7.65%
 //image[tfb_ruby_json][TechEmpower Framework Benchmarks(Ruby/JSON)]{
 //}
 
-mrubyとCRubyの結果を混ぜるのはそもそもどうなのだろう、という意見もあるかと思いますが、そこは一旦置いておいておいてやはりmruby + HTTPサーバが圧倒的に速いですね。mrubyについで、CRubyではroda + Sequel + PostgreSQLの組み合わせが三位になっています。ついで四位もroda + Sequel(こちらはDBがMySQL)です。なお、どちらもAPサーバはPumaです。そしてその次にSinatra + PostgreSQLの組みあわせが来ています。先ほどのbench-microほどの差は出ていないですが、それでも1.7倍程度高速なようです。
+mrubyとCRubyの結果を混ぜるのはそもそもどうなのだろう、という意見もあるかと思いますが、そこは一旦置いておいておいてやはりmruby + HTTPサーバが圧倒的に速いですね。mrubyについで、CRubyではroda + Sequel + PostgreSQLの組み合わせが三位になっています。ついで四位もroda + Sequel(こちらはDBがMySQL)です。なお、どちらもアプリケーションサーバはPumaです。そしてその次にSinatra + PostgreSQLの組みあわせが来ています。先ほどのbench-microほどの差は出ていないですが、それでも1.7倍程度高速なようです。
 
 もう一つ、DBに対して一つSQLを実行した場合の結果も見てみましょう。
 
