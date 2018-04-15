@@ -390,4 +390,80 @@ class Todo < Sequel::Model
 end
 //}
 
-これでテーブル、及び、そのテーブルを操作する為のmodelの準備が出来ました。
+親クラスが@<code>{Sequel::Model}になっているだけで、Active Recordを使っているのと変わらないですね。
+
+これでテーブル、及び、そのテーブルを操作する為のmodelの準備が出来ました。次に進みましょう。
+
+== 画面の作成
+
+ここから実際にTood機能を作っていきます。今回作成するアプリケーションでは画面は一ページだけで、一ページで、Toodの表示・作成を出来るようにしたいと思います。
+
+Todoの表示からいきたいと思います。
+
+まずは、サーバ側のコードから対応していきましょう。app.rbを編集して、トップページでTodoの一覧を表示出来るようにします。
+
+//list[app.rb][app.rb]{
+r.root do
+  @todos = Todo.all
+  view 'index'
+end
+//}
+
+SequelはActive Record同様に@<code>{all}メソッドで全ての値を取得出来ます。これでTodoの一覧を取得出来るようになったので、view側でその値を表示するようにしましょう。
+
+//list[views/index.erb][view/index.rb]{
+<h1>Todo</h1>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>内容</th>
+      <th>期限</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @todos.each do |todo| %>
+      <tr>
+        <td><%= todo.content %></td>
+        <td><%= todo.deadline %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+//}
+
+普通にHTMLですね。これで一覧の表示が出来るようになりました。
+
+続いて、Todoの登録を出来るようにしましょう。こちらもサーバ側のコードから修正しましょう。
+
+"/todos"に対してPOSTメソッドでデータが送信されたら、送信されたデータをTodoとして登録するようにします。@<code>{t.root}配下に、下記コードを追加してください。
+
+//list[app.rb][app.rb]{
+r.post 'todos' do
+  Todo.create(r.params['todo'])
+  flash[:notice] = 'Todoを作成しました'
+  r.redirect '/'
+end
+//}
+
+続けてview側です。views/index.erbの一番下に、下記コードを追加してください。
+
+//list[views/index.erb][view/index.rb]{
+<hr>
+
+<h4>登録</h4>
+<form action='/todos' method='post'>
+  <%== csrf_tag %>
+  <div class='form-group'>
+    <input type='text' name='todo[content]' id='todo_content' required='true', placeholder='内容'>
+    <input type='datetime-local' name='todo[deadline]' id='todo_deadline'>
+  </div>
+
+  <input type='submit' name='commit' value='作成', class='btn btn-primary'>
+</form>
+//}
+
+RodaにはRailsのようなviewヘルパーメソッドはありません@<fn>{form}。そのため、フォーム等も普通にHTMLを記載する必要があります。
+//footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用すると、メソッドを使用してformを作成する事も可能です。 https://github.com/jeremyevans/forme]
