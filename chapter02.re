@@ -15,7 +15,7 @@ $ createdb -U postgres -O my_todo my_todo_development
 
 == アプリケーション準備
 
-実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。
+実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。なお、サンプルのコードが https://github.com/y-yagi/my_todo にあります。必要に応じて参考にしてください。
 
 RodaはRailsにおける@<code>{rails new}コマンドのようなスケルトンを作成する為の仕組みがありません。全て自分でセットアップする必要があります。
 
@@ -337,3 +337,57 @@ multi_routeは、複数の名前付きルートを作成出来るようにする
 
 最後に、@<code>{view 'index'}で、トップページにアクセスした際に、@<code>{index}テンプレートの中身が表示されるようにしています。
 
+== テーブルの作成
+
+ここでは、Todoを格納する為のテーブルを作成しましょう。
+
+その前に、サンプルとして定義されているテーブルはもう不要なので、先にdev_downタスクを使ってテーブルを削除してしまいしょう。
+
+//cmd{
+$ rake dev_down
+//}
+
+また、models/model1.rb も不要です。こちらも合わせて削除してしまいしょう。
+
+//cmd{
+$ rm models/model1.rb
+//}
+
+では改めて、Todoを格納する為のテーブルを作成しましょう。
+
+Todoの内容と、締切日を設定出来るテーブルを作成したいと思います。 migrate/001_tables.rb を、下記の内容に変更してください。元々の記載されいる内容は全て削除してしまって大丈夫です。
+
+//list[001_tables.rb][001_tables.rb]{
+Sequel.migration do
+  change do
+    create_table(:todos) do
+      primary_key :id
+      String :content, null: false
+      DateTime :deadline
+    end
+  end
+end
+//}
+
+Railsのマイグレーションに慣れている方であれば、恐らく見ただけで何をしているか何となくわかるかとは思いますが、簡単に説明したいと思います。
+
+まず、Sequelのマイグレーションは全て@<code>{Sequel.migration}ブロックの中で実行する必要があるので、@<code>{Sequel.migration}を使用しています。
+
+次に、up / downどちらで実行されるかを定義します。ただ、リバーシブルなマイグレーションであれば、changeを使うことで、自動でup / down時に適切なメソッドを使用するようになります。create_tableはリバーシブルなメソッド(downではdrop_tableが呼ばれる)為、ここではchangeを使用します。
+
+最後に、create_tableを使用して実際に作成したテーブルを作成します。create_tableブロックの中でカラムを定義します。カラムは、型、カラム名、オプションという順番で定義します。
+
+これでテーブル作成ようのマイグレーションファイルが出来たので、再度rev_upタスクを実行します。
+
+//cmd{
+$ rake dev_up
+//}
+
+テーブルが出来たので、そのテーブルを操作する為のmodelも準備します。modelsディレクトリ配下に、todo.rbというファイル名でmodelを作成します。ファイルの中身は下記の通りです。
+
+//list[todo.rb][todo.rb]{
+class Todo < Sequel::Model
+end
+//}
+
+これでテーブル、及び、そのテーブルを操作する為のmodelの準備が出来ました。
