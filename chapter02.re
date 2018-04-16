@@ -467,3 +467,65 @@ end
 
 RodaにはRailsのようなviewヘルパーメソッドはありません@<fn>{form}。そのため、フォーム等も普通にHTMLを記載する必要があります。
 //footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用すると、メソッドを使用してformを作成する事も可能です。 https://github.com/jeremyevans/forme]
+
+ただのHTMLなので、特に説明はいらないかと思います。一点、CSRF対策用のタグを@<code>{csrf_tag}メソッドを使用して生成しているので、そこだけ注意してください。
+
+最後に、Todoの削除を出来るようにしましょう。
+
+Railsであれば、@<code>{link_to 'Destroy', xxx, method: :delete}でおしまい、なのですが、残念ながらviewヘルパーメソッドがないRodaではそんな簡単にはいきません。多少手間であるのですが、削除用のviewを追加し、そのページに削除ボタンを表示する、というアプローチをとりたいと思います。まずはサーバ側です。
+
+//list[app.rb][app.rb]{
+r.on 'todo', Integer do |id|
+  @todo = Todo[id]
+
+  r.get do
+    view 'delete'
+  end
+
+  r.post 'destroy' do
+    @todo.destroy
+    flash[:notice] = 'Todoを削除しました'
+    r.redirect '/'
+  end
+end
+//}
+
+削除ページの表示、及び、実際に削除する処理の二つルーティングを追加しています。どちらも/todo/:idというパスから始まるようにするために、まず@<code>{on}メソッドでブランチ(ここから"todo"パスのルーティングになります、という宣言のようなもの)を作成します。また、パラメータとしてTodoのIDが必須になるので、パラメータにIntegerの値がくることを宣言するように、@<code>{on}メソッドの引数に@<code>{Integer}を指定しています。
+
+あとは、/todo/:idにGETメソッドでアクセスしたら削除のページを表示するよう、/todo/:id/destroyにPOSTメソッドでアクセスしたら実際に削除処理を行うようにそれぞれしています。サーバ側の処理はこれで完了です。
+
+続けてview側です。まずは、views/index.erbに削除ページへのリンクを追加したいと思います。Todoの一覧を表示しているtableに、以下のようにaタグを追加してください。
+
+//list[views/index.erb][view/index.rb]{
+<tbody>
+  <% @todos.each do |todo| %>
+    <tr>
+      <td><%= todo.content %></td>
+      <td><%= todo.deadline %></td>
+      <td><a href='<%= "/todo/#{todo.id}" %>'>削除</a></td>
+    </tr>
+  <% end %>
+</tbody>
+//}
+
+最後に、削除ページのviewを追加します。delete.erbという名前のファイルを、viewディレクトリ配下に追加してください。
+
+//list[views/delete.erb][view/delete.rb]{
+<h4>削除</h4>
+<form action=' <%= "/todo/#{@todo.id}/destroy" %>' method='post'>
+  <%== csrf_tag %>
+  <table class="table table-bordered table-striped">
+    <tr class="string required">
+      <td><label class="label-before" for="todo_content">内容</label></td>
+      <td><span><%= @todo.content %></span></td>
+    </tr>
+    <tr class="string required">
+      <td><label class="label-before" for="todo_deadline">期限</label></td>
+      <td><span><%= @todo.deadline %></span></td>
+    </tr>
+  </table>
+  <input type='submit' name='delete' value='削除', class='btn btn-danger'>
+</form>
+//}
+
+これで削除も出来るようになりました。お疲れ様でした。
