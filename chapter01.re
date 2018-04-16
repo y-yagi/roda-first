@@ -150,7 +150,7 @@ Rodaの大きな特徴の一つに、プラグインシステムがあります�
 
 == パフォーマンス
 
-RodaがHP上でうたっている特徴の一つに、パフォーマンスがあります。HP上には、"Roda is the one of the fastest Ruby web frameworks."という記載もあります。中々つよきな発言ですね。
+RodaがHP上でうたっている特徴の一つに、パフォーマンスがあります。HP上には、@<i>{Roda is the one of the fastest Ruby web frameworks.}という記載もあります。中々強気な発言ですね。
 
 では、実際のパフォーマンスなどうなのでしょうか。Roda、及び他のフレームワークのパフォーマンスについて触れているサイトがあるので、それを見てみましょう。
 
@@ -211,4 +211,19 @@ mrubyとCRubyの結果を混ぜるのはそもそもどうなのだろう、と�
 //image[tfb_ruby_single_query][TechEmpower Framework Benchmarks(Ruby/Single query)]{
 //}
 
-roda + Sequelの組み合わせが一位、二位という結果になりました。JSONの結果より差は出なくなってきていますが、やはりSinatraよりは速い、という結果になっています。 これらの結果を見る限り、"Roda is the one of the fastest Ruby web frameworks"というのは、そこまで大げさではないように思えますね。
+roda + Sequelの組み合わせが一位、二位という結果になりました。JSONの結果より差は出なくなってきていますが、やはりSinatraよりは速い、という結果になっています。 これらの結果を見る限り、@<i>{Roda is the one of the fastest Ruby web frameworks.}というのは、そこまで大げさではないように思えますね。
+
+
+===[column] Rodaという名前について
+
+Rodaという名前は、どういう意図でつけられたのでしょうか? 辞書を調べてみても、Rodaという単語は存在しません。では何かの頭文字をとってつけたのかというと、そうでは無いようです。
+
+同じ疑問を持った方がいて、Hacker Newsの、Rodaに関するスレ(https://news.ycombinator.com/item?id=8152403)に、質問が記載され、それに対してJeremy Evans氏本人からの回答があります。回答は下記の通りです。
+
+@<i>{The name Roda comes from the Ys video game series, in which the Roda trees play a small role. I'm a huge Ys fan.}
+
+(https://news.ycombinator.com/item?id=8155027 から引用)
+
+という訳で、日本ファルコムのイースというゲームに出てくるロダの樹から引用したとのことです。ロダの樹は巨大な二本の老木です。恐らくルーティングが木構造になっていることから、連想したのだと思われます。因みに、今は流石になくなりましたが、昔はRodaのHPにイースのゲーム画面のスクリーンショットが貼られていたりしました。
+
+===[/column]
