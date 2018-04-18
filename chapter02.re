@@ -19,9 +19,9 @@ $ createdb -U postgres -O my_todo my_todo_development
 
 RodaはRailsにおける@<code>{rails new}コマンドのようなスケルトンを作成する為の仕組みがありません。全て自分でセットアップする必要があります。
 
-とはいえ、ゼロからセットアップをするのは、慣れないうちは大変です。幸い、作者であるJeremy Evans氏がRoda/Sequelを使用したアプリケーションを作成する為のスケルトンアプリケーションを公開してくれているので、今回はそちらを使用しようと思います。 なお、今回は、そのスケルトンに合わせてO/RマッパーにSequelを使用します。Sequelの使い方については、適時説明を入れていきますので、Sequelが使った事が無くても大丈夫です。
+とはいえ、ゼロからセットアップをするのは、慣れないうちは大変です。
 
-スケルトンアプリケーションは @<href>{https://github.com/jeremyevans/roda-sequel-stack} にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
+幸い、作者であるJeremy Evans氏がRoda/Sequelを使用したアプリケーションを作成する為のスケルトンアプリケーションを公開してくれているので、今回はそちらを使用しようと思います。そのスケルトンに合わせて、O/RマッパーにSequelを使用します。Sequelの使い方については、適時説明を入れていきますので、Sequelが使った事が無くても大丈夫です。スケルトンアプリケーションは @<href>{https://github.com/jeremyevans/roda-sequel-stack} にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
 
 //cmd{
 $ git clone https://github.com/jeremyevans/roda-sequel-stack.git
@@ -34,7 +34,7 @@ $ mv roda-sequel-stack my_todo
 $ cd my_todo
 //}
 
-このスケルトンアプリケーションでは、アプリケーションサーバが指定されておらず、使用されるアプリケーションサーバがユーザの環境に依存するようになっています。今回はPumaを使用したいと思います。Gemfileの@<code>{rack-unreloader}の下に@<code>{puma}を追加してください。
+このスケルトンアプリケーションでは、アプリケーションサーバが指定されておりません。今回はPumaを使用したいと思います。Gemfileの@<code>{rack-unreloader}の下に@<code>{puma}を追加してください。
 
 //list[Gemfile][Gemfile]{
 #@mapfile(scripts/02/Gemfile)
@@ -66,7 +66,7 @@ gem 'minitest-hooks', '>= 1.1.0'
 : rack-unreloader
   アプリケーションのファイルが更新された際に、更新されたファイルを再読み込みしてくれるライブラリ。このライブラリにより、ファイルを変更した際にいちいちアプリケーションサーバを再起動する必要がなくなります。
 : mintiest-hooks
-  Minitestでaround/around(:all) hooksを使用出来るようにする為のライブラリです。なお、Jeremy Evans氏は普段Minitest@<fn>{minitest}を使っているようで、このスケルトンアプリケーションでもMinitestを使うようになっています。
+  Minitestでaround/around(:all) hooksを使用出来るようにする為のライブラリです。Jeremy Evans氏は普段Minitest@<fn>{minitest}を使っているようで、このスケルトンアプリケーションでもMinitestを使うようになっています。
 //footnote[minitest][RodaやSequel、Erubi自体のテストがMinitestで書かれています。]
 
 @<code>{puma}を追加したら、@<code>{bundle install}でgemのインストールを行いましょう。
@@ -244,7 +244,7 @@ Rakefileには、大きく分けて3つのタスクが定義されています�
 
 最後に、テスト用のタスクです。model用のテストとweb(Capybaraを使ったテスト)用のテストでタスクが別れています。なお、"spec"という名前が少し紛らわしいかもしれませんが、Gemfileの箇所でも説明した通り、テストはMinitestを使うようになっています。MinitestのBDD風にテストを書くためのライブラリである、minitest/specを使っている為、"spec"という名前になっています。
 
-今回は紙面の都合上、テストについての説明は省いていますが、RodaもSequelもテストの為の特別な機能を提供している訳ではないので、Minitest、Capybaraの機能だけを使用してテストは書かれています。そのため、MinitestをRSpecに置き換えても、特に問題無くテストは書けます。
+今回は紙面の都合上、テストについての説明は省いていますが、RodaもSequelもテストの為の特別な機能を提供している訳ではありません。Minitest、Capybaraの機能だけを使用してテストは書かれています。そのため、MinitestをRSpecに置き換えても、特に問題無くテストは書けます。
 
 === config.ru
 
@@ -326,7 +326,7 @@ end
 
 次に、sessionの指定、及び、cookieを使用出来るようにする為に、Rack::Session::Cookie ミドルウェアをRackのスタックに追加しています。
 
-次に、各種プラグインのロード処理です。csrfはCSRF対策、assetsはassetファイル(CSS及びJavaScript)のレンダリング、renderはテンプレートのレンダリングの為のプラグインです。
+続いて、各種プラグインのロード処理です。csrfはCSRF対策、assetsはassetファイル(CSS及びJavaScript)のレンダリング、renderはテンプレートのレンダリングの為のプラグインです。
 
 flashは、リクエスト間でデータを保持する為の仕組みです。Railsのflash@<fn>{flash}と同様の機能です。
 //footnote[flash][@<href>{http://api.rubyonrails.org/classes/ActionDispatch/Flash.html}]
