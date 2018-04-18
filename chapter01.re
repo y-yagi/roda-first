@@ -3,20 +3,20 @@
 == Rodaとは
 
 Rodaは、Jeremy Evans(@jeremyevans)@<fn>{jeremyevans}氏によって作られたライブラリです。Jeremy Evans氏は、データベースツールキットのSequel@<fn>{sequel}や、テンプレートエンジンのErubi@<fn>{erubi}の作者でもあります。特にErubiは、Rails 5.1からRails標準のテンプレートエンジンになっており、名前を聞いた事ある方も多いかもしれません。
-//footnote[jeremyevans][https://github.com/jeremyevans]
+//footnote[jeremyevans][@<href>{https://github.com/jeremyevans}]
 //footnote[sequel][RailsにおけるActive Record相当のライブラリ。O/Rマッパーやデータベースのマイグレーションの為の機能が提供されている。http://sequel.jeremyevans.net/]
 //footnote[erubi][ERBテンプレートを表示する為のテンプレートエンジン。https://github.com/jeremyevans/erubi]
 
 最初のバージョン(2014/07/30リリース)から現在まで、RodaはJeremy Evans氏個人によって開発が続けられています。
 
 HP@<fn>{hp}やソースコードのREADME@<fn>{readme}では、Rodaの事を"Roda is a routing tree web toolkit"と紹介しています。
-//footnote[hp][http://roda.jeremyevans.net/]
-//footnote[readme][https://github.com/jeremyevans/roda/blob/master/README.rdoc]
+//footnote[hp][@<href>{http://roda.jeremyevans.net/}]
+//footnote[readme][@<href>{https://github.com/jeremyevans/roda/blob/master/README.rdoc}]
 
 この紹介の通り、Rodaはルーティング機能を提供するライブラリです。Model-View-Controller(以降MVC)パターンにおけるController部分の機能のみを提供しており、RailsのようにMVC全ての機能を提供しているわけではありません。
 
 Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります。実際、RodaはSinatraを参考に作られており、HP上にはSinatraとの比較についての説明が記載されています。SinatraとRodaの違いについては、@<hd>{SinatraとRoda}で触れたいと思います。
-//footnote[sinatra][http://sinatrarb.com/]
+//footnote[sinatra][@<href>{http://sinatrarb.com/}]
 
 == Hello World!
 
@@ -56,7 +56,7 @@ $ rackup
 //}
 
 
-最後に、ブラウザを起動し、http://localhost:9292/にアクセスしてくみてください。"Hello World!"と表示されれば成功です。
+最後に、ブラウザを起動し、@<href>{http://localhost:9292/}にアクセスしてくみてください。"Hello World!"と表示されれば成功です。
 
 コードについては、恐らくクラス名やメソッド名から何をしている処理なのか、大体わかってしまうかもしれませんが、簡単に説明をしたいと思います。
 
@@ -140,7 +140,7 @@ end
 これはパスが一階層しかないとあまり恩恵が無いかもしれませんが、パスの階層が深くなればなるだけ、よりわかりやすさに差が出てくると思います。
 
 なお、ルーティングに木構造を使用するライブラリはRodaがはじめてではありません。Cuba@<fn>{cuba}というライブラリがこの方法をとっており、実際RodaはCubaをforkして開発されています@<fn>{fork}。
-//footnote[cuba][http://roda.jeremyevans.net/]
+//footnote[cuba][@<href>{http://roda.jeremyevans.net/}]
 //footnote[fork][RodaのGitHubのリポジトリをみると、"forked from soveran/cuba"と表示されているのが確認できます]
 
 Rodaは、CubaとSinatraという二つの異なるライブラリの思想や設計に影響を受けて、今のような形になっています。
@@ -157,7 +157,7 @@ Rodaの大きな特徴の一つに、プラグインシステムがあります�
 しかしこのシステムにより、不要な機能が読み込まれず、結果ライブラリの動作が高速になったり、何が問題があった際に確認すべきソースが少なくなったりと、少なくない恩恵があります。また、何か自分が独自に機能を追加したい場合も、プラグインとしてその機能を提供することで、簡単に機能を追加出来る、というメリットもあります。
 
 なお、Roda本体で提供しているプラグインについては、doc@{fn}{document}にまとまっています。Roda本体だけでどういう機能が提供されているか気になる方は、一度チェックしてみてください。
-//footnote[document][http://roda.jeremyevans.net/documentation.html#plugins]
+//footnote[document][@<href>{http://roda.jeremyevans.net/documentation.html#plugins}]
 
 
 == パフォーマンス
@@ -166,12 +166,12 @@ RodaがHP上でうたっている特徴の一つに、パフォーマンスが�
 
 では、実際のパフォーマンスなどうなのでしょうか。Roda、及び他のフレームワークのパフォーマンスについて触れているサイトがあるので、それを見てみましょう。
 
-まずは、https://github.com/luislavena/bench-micro です。これは、RubyのWeb用のマイクロフレームワークについてのベンチマークを行っているリポジトリです。アプリは"Hello World!"を返すだけの非常にシンプルなアプリになっています。なお、ベンチマーキングには、wrk@<fn>{wrk}を使用しています。
-//footnote[wrk][https://github.com/wg/wrk]
+まずは、@<href>{https://github.com/luislavena/bench-micro} です。これは、RubyのWeb用のマイクロフレームワークについてのベンチマークを行っているリポジトリです。アプリは"Hello World!"を返すだけの非常にシンプルなアプリになっています。なお、ベンチマーキングには、wrk@<fn>{wrk}を使用しています。
+//footnote[wrk][@<href>{https://github.com/wg/wrk}]
 
 結果は下記の通りです。
 
-//list[bench-micro][https://github.com/luislavena/bench-microから引用]{
+//list[bench-micro][@<href>{https://github.com/luislavena/bench-micro}から引用]{
 Requests/sec
 
 Framework            Requests/sec  % from best
@@ -198,12 +198,12 @@ rails-api                 1211.33        7.65%
 //}
 
 一位はRackです。昨今のフレームワークはRackをベースにしている為、素のRackが一番速いのは当然ですね。ついで、watts@<fn>{watts}、syro@<fn>{syro}ときて、roda、という順位なっています。
-//footnote[watts][リソース指向のフレームワーク https://github.com/pete/watts]
-//footnote[syro][ルータライブラリ http://soveran.github.io/syro/]
+//footnote[watts][リソース指向のフレームワーク @<href>{https://github.com/pete/watts}]
+//footnote[syro][ルータライブラリ @<href>{http://soveran.github.io/syro/}]
 
 上位三つと比べると少々劣りますが、それでも十分速いのではないでしょうか。なお、比較対象にあげられているSinatraと比べると、3倍近い性能を出しています。
 
-もう一つ、TechEmpowerがおこなっているWeb Framework Benchmarks(https://www.techempower.com/benchmarks/)を見てみましょう。
+もう一つ、TechEmpower社がおこなっているWeb Framework Benchmarks(@<href>{https://www.techempower.com/benchmarks/})を見てみましょう。
 
 これはRubyに限らず、様々なプログラミング言語のWebアプリケーションのフレームワークのパフォーマンス比較を行い、その結果を表示しているサイトです。ベンチマークは定期的に取得するようになっており、最新の結果(Round 15 / 2018-02-14)では、26のプログラミング言語の158ものフレームワークがベンチマークの対象になっています。
 
@@ -230,11 +230,11 @@ roda + Sequelの組み合わせが一位、二位という結果になりまし�
 
 Rodaという名前は、どういう意図でつけられたのでしょうか? 辞書を調べてみても、Rodaという単語は存在しません。では何かの頭文字をとってつけたのかというと、そうでは無いようです。
 
-同じ疑問を持った方がいて、Hacker Newsの、Rodaに関するスレ(https://news.ycombinator.com/item?id=8152403)に、質問が記載され、それに対してJeremy Evans氏本人からの回答があります。回答は下記の通りです。
+同じ疑問を持った方がいて、Hacker Newsの、Rodaに関するスレ(@<href>{https://news.ycombinator.com/item?id=8152403})に、質問が記載され、それに対してJeremy Evans氏本人からの回答があります。回答は下記の通りです。
 
 @<i>{The name Roda comes from the Ys video game series, in which the Roda trees play a small role. I'm a huge Ys fan.}
 
-(https://news.ycombinator.com/item?id=8155027 から引用)
+(@<href>{https://news.ycombinator.com/item?id=8155027} から引用)
 
 という訳で、日本ファルコムのイースというゲームに出てくるロダの樹から引用したとのことです。ロダの樹は巨大な二本の老木です。恐らくルーティングが木構造になっていることから、連想したのだと思われます。因みに、今は流石になくなりましたが、昔はRodaのHPにイースのゲーム画面のスクリーンショットが貼られていたりしました。
 

@@ -4,7 +4,7 @@
 
 === ドキュメント
 
-Rodaのドキュメントは、 http://roda.jeremyevans.net/documentation.html にまとまっています。API docへのリンクだけではなく、プラグインの一覧や発表資料へのリンク等もまとまっていますので、まずはこのページを見るのがおすすめです。
+Rodaのドキュメントは、 @<href>{http://roda.jeremyevans.net/documentation.html} にまとまっています。API docへのリンクだけではなく、プラグインの一覧や発表資料へのリンク等もまとまっていますので、まずはこのページを見るのがおすすめです。
 
 === ソースコード
 
@@ -12,12 +12,12 @@ Rodaのドキュメントは、 http://roda.jeremyevans.net/documentation.html �
 
 === Giftsmas
 
-ここからはRodaで作られたアプリケーションについてご紹介したいと思います。まずは、Giftsmas(https://github.com/jeremyevans/giftsmas)というアプリケーションです。これはJeremy Evans氏本人が作成したアプリケーションで、ギフトを管理する為のアプリケーション(どんなイベントがあって、誰に何のギフトを送ったのか等)です。
+ここからはRodaで作られたアプリケーションについてご紹介したいと思います。まずは、Giftsmas(@<href>{https://github.com/jeremyevans/giftsmas})というアプリケーションです。これはJeremy Evans氏本人が作成したアプリケーションで、ギフトを管理する為のアプリケーション(どんなイベントがあって、誰に何のギフトを送ったのか等)です。
 
 modelが4つ、メインのコードも約250行程度しか無い小さなアプリケーションではありますが、Jeremy Evans氏本人が作成しているということもあり、Roda、及び、Sequelを使った実際のアプリケーションがどのようなものになるのかの参考になるかと思います。
 
 === Kontena
 
-最後にもう一つ。Kontena(https://github.com/kontena/kontena/tree/master/server)という、Dockerコンテナを管理する為のアプリケーションです。
+最後にもう一つ。Kontena(@<href>{https://github.com/kontena/kontena/tree/master/server})という、Dockerコンテナを管理する為のアプリケーションです。
 
 こちらはRoda + DBにMongoDBという構成です。modelもroutesのファイルも40以上という中々重厚なアプリケーションです。こちらは中規模程度のアプリケーションをRodaを使って本当に作る事が出来るのかの参考になるかと思います。

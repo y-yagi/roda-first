@@ -15,13 +15,13 @@ $ createdb -U postgres -O my_todo my_todo_development
 
 == アプリケーション準備
 
-実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。なお、サンプルのコードが https://github.com/y-yagi/my_todo にあります。必要に応じて参考にしてください。
+実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。なお、サンプルのコードが @<href>{https://github.com/y-yagi/my_todo} にあります。必要に応じて参考にしてください。
 
 RodaはRailsにおける@<code>{rails new}コマンドのようなスケルトンを作成する為の仕組みがありません。全て自分でセットアップする必要があります。
 
 とはいえ、ゼロからセットアップをするのは、慣れないうちは大変です。幸い、作者であるJeremy Evans氏がRoda/Sequelを使用したアプリケーションを作成する為のスケルトンアプリケーションを公開してくれているので、今回はそちらを使用しようと思います。 なお、今回は、そのスケルトンに合わせてO/RマッパーにSequelを使用します。Sequelの使い方については、適時説明を入れていきますので、Sequelが使った事が無くても大丈夫です。
 
-スケルトンアプリケーションは https://github.com/jeremyevans/roda-sequel-stack にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
+スケルトンアプリケーションは @<href>{https://github.com/jeremyevans/roda-sequel-stack} にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
 
 //cmd{
 $ git clone https://github.com/jeremyevans/roda-sequel-stack.git
@@ -90,7 +90,7 @@ $ rake dev_up
 $ rackup
 //}
 
-http://localhost:9292/ にブラウザでアクセスして、"Hello World!"が表示されれば、起動成功です。
+@<href>{http://localhost:9292/} にブラウザでアクセスして、"Hello World!"が表示されれば、起動成功です。
 
 
 == アプリケーション構成
@@ -329,7 +329,7 @@ end
 次に、各種プラグインのロード処理です。csrfはCSRF対策、assetsはassetファイル(CSS及びJavaScript)のレンダリング、renderはテンプレートのレンダリングの為のプラグインです。
 
 flashは、リクエスト間でデータを保持する為の仕組みです。Railsのflash@<fn>{flash}と同様の機能です。
-//footnote[flash][http://api.rubyonrails.org/classes/ActionDispatch/Flash.html]
+//footnote[flash][@<href>{http://api.rubyonrails.org/classes/ActionDispatch/Flash.html}]
 
 multi_routeは、複数の名前付きルートを作成出来るようにするプラグインです。通常、ルーティングの大本の定義である@<code>{root}は一つしか定義出来ません。しかし、multi_routeプラグインを使用する事により、この@<code>{root}を複数定義するように出来ます。これにより、例えば、APIに関するルーティングは別ファイルにする、ということが可能になっています。このスケルトンアプリケーションでは、routesディレクトリ配下にルーティングファイルが配置されるようになっています。そのため、その次の行で、rack-unreloaderでroutesディレクトリのファイルがreload対象になるようにしています。
 
@@ -466,7 +466,7 @@ end
 //}
 
 RodaにはRailsのようなviewヘルパーメソッドはありません@<fn>{form}。そのため、フォーム等も普通にHTMLを記載する必要があります。
-//footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用すると、メソッドを使用してformを作成する事も可能です。 https://github.com/jeremyevans/forme]
+//footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用すると、メソッドを使用してformを作成する事も可能です。 @<href>{https://github.com/jeremyevans/forme}]
 
 ただのHTMLなので、特に説明はいらないかと思います。一点、CSRF対策用のタグを@<code>{csrf_tag}メソッドを使用して生成しているので、そこだけ注意してください。
 
@@ -544,7 +544,7 @@ Sinatraの代替として使う分には良いかもしれませんが、やは�
 
 もちろん、Railsの方が開発はしやすいでしょう。Railsに慣れていればなおのことだと思います。Rodaを使うことで、その慣れによる開発効率は失われてしましますが、代わりに性能という恩恵を受けることが出来ます。
 
-@<hd>{パフォーマンス}で触れたTechEmpower社によるJSONレスポンスのベンチマーク結果によると、Roda + Sequelの組み合わせはRailsの実に5倍以上の性能を出しています。
+「 1.5 パフォーマンス 」で触れたTechEmpower社によるJSONレスポンスのベンチマーク結果によると、Roda + Sequelの組み合わせはRailsの実に5倍以上の性能を出しています。
 
 勿論、これはあくまでベンチマークであり、実際のアプリケーションでそこまでの差異が出るとは限りません。しかしRodaを使うことで速くなる可能性は間違いなくあるでしょう。最初Railsで開発していたが、性能が期待通りに出なそうなので、違う言語に変える、というようなケースがありましたら、是非Rodaについても検討してみてください。
 
@@ -586,6 +586,6 @@ class MyTodo
 end
 //}
 
-これで完成です。http://localhost:9292/api/todos にアクセスして、JSONが出力されることを確認してください。
+これで完成です。@<href>{http://localhost:9292/api/todos} にアクセスして、JSONが出力されることを確認してください。
 
 //footnote[sequel_plugin][正確には、Sequelのプラグインシステムが先にあって、RodaのプラグインシステムはSequelのプラグインシステムを元に作られています。]
