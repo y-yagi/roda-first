@@ -2,10 +2,10 @@
 
 == Rodaとは
 
-Rodaは、Jeremy Evans(@jeremyevans)@<fn>{jeremyevans}氏によって作られたライブラリです。Jeremy Evans氏は、データベースツールキットのSequel@<fn>{sequel}や、テンプレートエンジンのErubi@<fn>{erubi}の作者でもあります。特にErubiは、Rails 5.1からRails標準のテンプレートエンジンになっており、名前を聞いた事ある方も多いかもしれません。
+Rodaは、Jeremy Evans(@jeremyevans)@<fn>{jeremyevans}氏によって作られたライブラリです。Jeremy Evans氏は、データベースツールキットのSequel@<fn>{sequel}や、テンプレートエンジンのErubi@<fn>{erubi}の作者でもあります。特にErubiは、Rails 5.1からRails標準のテンプレートエンジンになっており、名前を聞いた事がある方も多いかもしれません。
 //footnote[jeremyevans][@<href>{https://github.com/jeremyevans}]
-//footnote[sequel][RailsにおけるActive Record相当のライブラリ。O/Rマッパーやデータベースのマイグレーションの為の機能が提供されている。http://sequel.jeremyevans.net/]
-//footnote[erubi][ERBテンプレートを表示する為のテンプレートエンジン。https://github.com/jeremyevans/erubi]
+//footnote[sequel][RailsにおけるActive Record相当のライブラリ。O/Rマッパーやデータベースのマイグレーションの為の機能が提供されている。@<href>{http://sequel.jeremyevans.net/}]
+//footnote[erubi][ERBテンプレートを表示する為のテンプレートエンジン。@<href>{https://github.com/jeremyevans/erubi}]
 
 最初のバージョン(2014/07/30リリース)から現在まで、RodaはJeremy Evans氏個人によって開発が続けられています。
 
@@ -13,14 +13,16 @@ HP@<fn>{hp}やソースコードのREADME@<fn>{readme}では、Rodaの事を"Rod
 //footnote[hp][@<href>{http://roda.jeremyevans.net/}]
 //footnote[readme][@<href>{https://github.com/jeremyevans/roda/blob/master/README.rdoc}]
 
-この紹介の通り、Rodaはルーティング機能を提供するライブラリです。Model-View-Controller(以降MVC)パターンにおけるController部分の機能のみを提供しており、RailsのようにMVC全ての機能を提供しているわけではありません。
+この紹介の通り、Rodaはルーティング機能を提供するライブラリです。
 
-Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります。実際、RodaはSinatraを参考に作られており、HP上にはSinatraとの比較についての説明が記載されています。SinatraとRodaの違いについては、@<hd>{SinatraとRoda}で触れたいと思います。
+Model-View-Controller(以降MVC)パターンにおけるController部分の機能のみを提供しており、RailsのようにMVC全ての機能を提供しているわけではありません。
+
+Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります。実際、RodaはSinatraを参考に作られており、HP上にはSinatraとの比較についての説明が記載されています。SinatraとRodaの違いについては、@<hd>{SinatraとRoda}で触れます。
 //footnote[sinatra][@<href>{http://sinatrarb.com/}]
 
 == Hello World!
 
-違いについて説明する前に、まずはRodaにさわってみましょう。ここでは、よくある「Hello, World!」と表示するだけのウェブアプリケーションを作ろうと思います。
+違いについて説明する前に、まずはRodaにさわってみましょう。ここでは、よくある「Hello, World!」と表示するだけのウェブアプリケーションを作ります。
 
 まずは、Rodaをインストールしましょう。なお、執筆時点で最新のバージョンである3.6.0を使用します。
 
@@ -58,7 +60,7 @@ $ rackup
 
 最後に、ブラウザを起動し、@<href>{http://localhost:9292/}にアクセスしてくみてください。"Hello World!"と表示されれば成功です。
 
-コードについては、恐らくクラス名やメソッド名から何をしている処理なのか、大体わかってしまうかもしれませんが、簡単に説明をしたいと思います。
+コードについては、恐らくクラス名やメソッド名から何をしている処理なのか、大体わかってしまうかもしれませんが簡単に説明します。
 
 : Roda
   Rodaのコアとなるクラス。このクラスを継承したクラスで処理を定義す必要があります。

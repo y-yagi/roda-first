@@ -6,10 +6,10 @@
 //footnote[roda][http://roda.jeremyevans.net/]
 
 RodaはRuby製のライブラリです。RubyでWebアプリケーション用のライブラリといえば、
-一般的にはRuby on Rails(以降Rails)@<fn>{rails}が使われる事が多いです。
+一般的にはRuby on Rails(以降Rails)@<fn>{rails}が使われています。
 //footnote[rails][http://rubyonrails.org/]
 
-実際に、Railsを使うのが適切なケースが殆どでしょう。しかし、Railsは多機能なライブラリな為、実は使用が適切ではないケースもあるのではないかと考えています。
+しかし、要件によっては、実はRailsが適切ではないケースもあるのではないかと考えています。
 
 そんな時に、もし他のライブラリの事を知っていれば、そのライブラリを使う事も検討出来るでしょう。
 
