@@ -2,7 +2,7 @@
 
 == 前準備
 
-今回のアプリケーションではデータベースにはPostgreSQLを使用します。バージョンは9.2以上であればOKです。各自環境に合わせた方法でインストールをお願いします。
+今回のアプリケーションではデータベースにPostgreSQLを使用します。バージョンは9.2以上であればOKです。各自環境に合わせた方法でインストールをお願いします。
 
 PostgreSQLのインストールが完了したら、アプリケーションで使用するデータベースとユーザを作成しましょう。下記コマンドをPostgreSQLのユーザで実行してください。
 
@@ -15,19 +15,23 @@ $ createdb -U postgres -O my_todo my_todo_development
 
 == アプリケーション準備
 
-実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。なお、サンプルのコードが @<href>{https://github.com/y-yagi/my_todo} にあります。必要に応じて参考にしてください。
+実際にRodaを使って簡単なTodoアプリケーションを作ってみましょう。なお、サンプルのコードが @<href>{https://github.com/y-yagi/my_todo} にあります。必要に応じて参照してください。
 
 RodaはRailsにおける@<code>{rails new}コマンドのようなスケルトンを作成する為の仕組みがありません。全て自分でセットアップする必要があります。
 
 とはいえ、ゼロからセットアップをするのは、慣れないうちは大変です。
 
-幸い、作者であるJeremy Evans氏がRoda/Sequelを使用したアプリケーションを作成する為のスケルトンアプリケーションを公開してくれているので、今回はそちらを使用しようと思います。そのスケルトンに合わせて、O/RマッパーにSequelを使用します。Sequelの使い方については、適時説明を入れていきますので、Sequelが使った事が無くても大丈夫です。スケルトンアプリケーションは @<href>{https://github.com/jeremyevans/roda-sequel-stack} にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
+Jeremy Evans氏がRoda/Sequelを使用したアプリケーションを作成する為のスケルトンアプリケーションを公開してくれているので、今回はそちらを使用しようします。
+
+そのスケルトンに合わせて、O/RマッパーにSequelを使用します。Sequelの使い方については、適時説明を入れていきますので、Sequelが使った事が無くても大丈夫です。
+
+スケルトンアプリケーションは @<href>{https://github.com/jeremyevans/roda-sequel-stack} にありますので、まずは、git cloneしてアプリケーションをダウンロードしましょう。
 
 //cmd{
 $ git clone https://github.com/jeremyevans/roda-sequel-stack.git
 //}
 
-今回作成するアプリケーションは"MyTodo"という名前にしようと思いますので、ディレクトリ名も"my_todo"に変更しましょう。
+今回作成するアプリケーションはMyTodoという名前にしようと思いますので、ディレクトリ名もmy_todoに変更しましょう。
 
 //cmd{
 $ mv roda-sequel-stack my_todo
@@ -55,21 +59,21 @@ gem 'minitest', '>= 5.7.0'
 gem 'minitest-hooks', '>= 1.1.0'
 //}
 
-ここで、使用しているgemで、あまり普段使用しないであろうgemについて簡単に説明したいと思います。
+ここで、使用しているgemで、あまり普段使用しないであろうgemについて簡単に紹介したいと思います。
 
 : rack_csrf
   CSRF対策用Rackミドルウェア。Rodaのcsrfプラグインはこのライブラリを使用して実装されています。
 : tilt
-  各種テンプレートエンジンへの汎用インターフェイスを提供してくれるライブラリ。Rackのテンプレートレンダリングプラグインはこのライブラリを使用して実装されています。
+  各種テンプレートエンジンへの汎用インターフェイスを提供してくれるライブラリ。Rodaのテンプレートレンダリングプラグインはこのライブラリを使用して実装されています。
 : sequel_pg
   Sequelの行フェッチ処理をCで実装したライブラリ。これを使うことにより、素のSequelよりSELECT処理が高速に行えるようになっています。Jeremy Evans氏が作成した公式のライブラリです。なお、PostgreSQL版のみ存在し、MySQL版はありません。
 : rack-unreloader
-  アプリケーションのファイルが更新された際に、更新されたファイルを再読み込みしてくれるライブラリ。このライブラリにより、ファイルを変更した際にいちいちアプリケーションサーバを再起動する必要がなくなります。
+  アプリケーションのファイルが更新された際に、更新されたファイルを再読み込みしてくれるライブラリ。このライブラリにより、ファイルを変更した際にアプリケーションサーバを再起動する必要がなくなります。
 : mintiest-hooks
   Minitestでaround/around(:all) hooksを使用出来るようにする為のライブラリです。Jeremy Evans氏は普段Minitest@<fn>{minitest}を使っているようで、このスケルトンアプリケーションでもMinitestを使うようになっています。
 //footnote[minitest][RodaやSequel、Erubi自体のテストがMinitestで書かれています。]
 
-@<code>{puma}を追加したら、@<code>{bundle install}でgemのインストールを行いましょう。
+@<code>{puma}を追加したら、@<code>{bundle install}を実行してgemをインストールしましょう。
 
 //cmd{
 $ bundle install
@@ -93,11 +97,11 @@ $ rackup
 @<href>{http://localhost:9292/} にブラウザでアクセスして、"Hello World!"が表示されれば、起動成功です。
 
 
-== アプリケーション構成
+== アプリケーションの構成
 
 ここでは、スケルトンアプリケーションの構成についてみていきましょう。
 
-ファイル構成は下記のようになっているかと思います。
+ファイル構成は下記のようになっています。
 
 //emlist{
 .
@@ -238,17 +242,19 @@ end
 
 Rakefileには、大きく分けて3つのタスクが定義されています。データベースマイグレーション用のタスク、コンソール用のタスク、および、テスト用のタスクです。
 
-まず、データベースマイグレーション用のタスクです。Sequelでは、データベースマイグレーション用のRakeタスク(Railsにおける@<code>{db:migrate}や@<code>{db:rollback}が提供されていない為、自前でタスクを準備しています。環境名 + up / downでタスクが実行出来るようになっています。例えば、development環境のmigrateを実行したい場合は、@<code>{dev_up}を実行すればOKです。なお、downタスクは、@<code>{db:rollback}と異なり、最初のマイグレーションまでrollbackされてしまうので、その点だけご注意下さい。
+まず、データベースマイグレーション用のタスクです。Sequelでは、データベースマイグレーション用のRakeタスク(Railsにおける@<code>{db:migrate}や@<code>{db:rollback})が提供されていない為、自前でタスクを準備しています。環境名 + up / downでタスクが実行出来るようになっています。
+
+例えば、development環境のmigrateを実行したい場合は、@<code>{dev_up}を実行すればOKです。なお、downタスクは、@<code>{db:rollback}と異なり、最初のマイグレーションまでrollbackされてしまうので、その点だけご注意下さい。
 
 次に、コンソール用のタスクです。コードを見て頂くとわかるとおり、基本的はirbを実行しているだけです。RACK_ENVを指定しているのと、models配下のファイルを読み込むようになっているので、irb起動後、すぐmodelが使用出来るようになっています。
 
-最後に、テスト用のタスクです。model用のテストとweb(Capybaraを使ったテスト)用のテストでタスクが別れています。なお、"spec"という名前が少し紛らわしいかもしれませんが、Gemfileの箇所でも説明した通り、テストはMinitestを使うようになっています。MinitestのBDD風にテストを書くためのライブラリである、minitest/specを使っている為、"spec"という名前になっています。
+最後に、テスト用のタスクです。model用のテストとweb(Capybaraを使ったテスト)用のテストでタスクが別れています。なお、specという名前が少し紛らわしいかもしれませんが、Gemfileの箇所でも説明した通り、テストはMinitestを使うようになっています。MinitestのBDD風にテストを書くためのライブラリである、minitest/specを使っている為、specという名前になっています。
 
-今回は紙面の都合上、テストについての説明は省いていますが、RodaもSequelもテストの為の特別な機能を提供している訳ではありません。Minitest、Capybaraの機能だけを使用してテストは書かれています。そのため、MinitestをRSpecに置き換えても、特に問題無くテストは書けます。
+今回は紙面の都合上、テストについての説明は省いていますが、RodaもSequelもテストの為の特別な機能を提供している訳ではありません。Minitest、Capybaraの機能だけを使用してテストは書かれています。そのため、MinitestをRSpecに置き換えても、問題無くテストは書けます。
 
 === config.ru
 
-続いています、config.ruです。
+続けてconfig.ruです。
 
 最初に書いたHello Worldを表示するアプリケーションでは、config.ruにメインとなるコードを記載しましたが、このスケルトンアプリケーションでは、メインのコードはapp.rbに記載するようにして、config.ruではそのファイルを読み込むようになっています。
 
@@ -293,18 +299,19 @@ class MyTodo < Roda
     'X-Content-Type-Options'=>'nosniff',
     'X-XSS-Protection'=>'1; mode=block'
 
-  # Don't delete session secret from environment in development mode as it breaks reloading
-  session_secret = ENV['RACK_ENV'] == 'development' ? ENV['MY_TODO_SESSION_SECRET']
-    : ENV.delete('MY_TODO_SESSION_SECRET')
+  # Don't delete session secret from environment in development
+  # mode as it breaks reloading
+  session_secret = ENV['RACK_ENV'] == 'development' ?
+    ENV['MY_TODO_SESSION_SECRET'] : ENV.delete('MY_TODO_SESSION_SECRET')
   use Rack::Session::Cookie,
     key: '_MyTodo_session',
-    #secure: ENV['RACK_ENV'] != 'test', # Uncomment if only allowing https:// access
-    :same_site=>:lax, # or :strict if you want to disallow linking into the site
+    :same_site=>:lax,
     secret: (session_secret || SecureRandom.hex(40))
 
   plugin :csrf
   plugin :flash
-  plugin :assets, css: 'app.scss', css_opts: {style: :compressed, cache: false},
+  plugin :assets, css: 'app.scss',
+                  css_opts: {style: :compressed, cache: false},
                   timestamp_paths: true
   plugin :render, escape: true
   plugin :multi_route
@@ -331,7 +338,9 @@ end
 flashは、リクエスト間でデータを保持する為の仕組みです。Railsのflash@<fn>{flash}と同様の機能です。
 //footnote[flash][@<href>{http://api.rubyonrails.org/classes/ActionDispatch/Flash.html}]
 
-multi_routeは、複数の名前付きルートを作成出来るようにするプラグインです。通常、ルーティングの大本の定義である@<code>{root}は1つしか定義出来ません。しかし、multi_routeプラグインを使用する事により、この@<code>{root}を複数定義するように出来ます。これにより、例えば、APIに関するルーティングは別ファイルにする、ということが可能になっています。このスケルトンアプリケーションでは、routesディレクトリ配下にルーティングファイルが配置されるようになっています。そのため、その次の行で、rack-unreloaderでroutesディレクトリのファイルがreload対象になるようにしています。
+multi_routeは、複数の名前付きルートを作成出来るようにするプラグインです。通常、ルーティングの大本の定義である@<code>{root}は1つしか定義出来ません。しかし、multi_routeプラグインを使用する事により、この@<code>{root}を複数定義するように出来ます。これにより、例えば、APIに関するルーティングは別ファイルにする、ということが可能になっています。
+
+このスケルトンアプリケーションでは、routesディレクトリ配下にルーティングファイルが配置されるようになっています。そのため、その次の行で、rack-unreloaderでroutesディレクトリのファイルがreload対象になるようにしています。
 
 @<code>{route}からが実際のルーティングの定義です。まず、@<code>{assets}、及び、@<code>{multi_route}メソッドを呼び出して、assetファイルのレンダリング、複数routeの読み込みが行われるようにしています。
 
@@ -339,15 +348,15 @@ multi_routeは、複数の名前付きルートを作成出来るようにする
 
 == テーブルの作成
 
-ここでは、Todoを格納する為のテーブルを作成しましょう。
+ここでは、Todoを格納する為のテーブルを作成します。
 
-その前に、サンプルとして定義されているテーブルはもう不要なので、先にdev_downタスクを使ってテーブルを削除してしまいしょう。
+その前に、サンプルとして定義されているテーブルはもう不要なので、先にdev_downタスクを使ってテーブルを削除してしまいましょう。
 
 //cmd{
 $ rake dev_down
 //}
 
-また、models/model1.rb も不要です。こちらも合わせて削除してしまいしょう。
+また、models/model1.rb も不要です。こちらも合わせて削除してしまいましょう。
 
 //cmd{
 $ rm models/model1.rb
@@ -355,7 +364,7 @@ $ rm models/model1.rb
 
 では改めて、Todoを格納する為のテーブルを作成しましょう。
 
-Todoの内容と、締切日を設定出来るテーブルを作成したいと思います。 migrate/001_tables.rb を、下記の内容に変更してください。元々の記載されいる内容は全て削除してしまって大丈夫です。
+Todoの内容と、締切日を設定出来るテーブルを作成したいと思います。 migrate/001_tables.rb を、下記の内容に変更してください。元々記載されている内容は全て削除してしまって大丈夫です。
 
 //list[001_tables.rb][001_tables.rb]{
 Sequel.migration do
@@ -369,7 +378,7 @@ Sequel.migration do
 end
 //}
 
-Railsのマイグレーションに慣れている方であれば、恐らく見ただけで何をしているか何となくわかるかとは思いますが、簡単に説明したいと思います。
+Railsのマイグレーションに慣れている方であれば、恐らく見ただけで何をしているか何となくわかるかとは思いますが、簡単に説明していきます。
 
 まず、Sequelのマイグレーションは全て@<code>{Sequel.migration}ブロックの中で実行する必要があるので、@<code>{Sequel.migration}を使用しています。
 
@@ -396,9 +405,9 @@ end
 
 == 画面の作成
 
-ここから実際にTood機能を作っていきます。今回作成するアプリケーションでは画面は一ページだけで、一ページで、Toodの表示・作成を出来るようにしたいと思います。
+ここから実際にTodo機能を作っていきます。今回作成するアプリケーションでは、トップページでTodoの表示・作成を出来るようにしたいと思います。
 
-Todoの表示からいきたいと思います。
+Todoの表示からいきます。
 
 まずは、サーバ側のコードから対応していきましょう。app.rbを編集して、トップページでTodoの一覧を表示出来るようにします。
 
@@ -438,7 +447,7 @@ SequelはActive Record同様に@<code>{all}メソッドで全ての値を取得�
 
 続いて、Todoの登録を出来るようにしましょう。こちらもサーバ側のコードから修正しましょう。
 
-"/todos"に対してPOSTメソッドでデータが送信されたら、送信されたデータをTodoとして登録するようにします。@<code>{t.root}配下に、下記コードを追加してください。
+/todosに対してPOSTメソッドでデータが送信されたら、送信されたデータをTodoとして登録するようにします。@<code>{t.root}配下に、下記コードを追加してください。
 
 //list[app.rb][app.rb]{
 r.post 'todos' do
@@ -457,18 +466,20 @@ end
 <form action='/todos' method='post'>
   <%== csrf_tag %>
   <div class='form-group'>
-    <input type='text' name='todo[content]' id='todo_content' required='true', placeholder='内容'>
+    <input type='text' name='todo[content]' id='todo_content'
+required='true', placeholder='内容'>
     <input type='datetime-local' name='todo[deadline]' id='todo_deadline'>
   </div>
 
-  <input type='submit' name='commit' value='作成', class='btn btn-primary'>
+  <input type='submit' name='commit' value='作成' class='btn btn-primary'>
 </form>
 //}
 
 RodaにはRailsのようなviewヘルパーメソッドはありません@<fn>{form}。そのため、フォーム等も普通にHTMLを記載する必要があります。
-//footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用すると、メソッドを使用してformを作成する事も可能です。 @<href>{https://github.com/jeremyevans/forme}]
+//footnote[form][Jeremy Evans氏がform用のライブラリを作成しており、そちらを使用することでメソッドを使用してformを作成する事も可能です。 @<href>{https://github.com/jeremyevans/forme}]
 
 ただのHTMLなので、特に説明はいらないかと思います。一点、CSRF対策用のタグを@<code>{csrf_tag}メソッドを使用して生成しているので、そこだけ注意してください。
+
 
 最後に、Todoの削除を出来るようにしましょう。
 
@@ -490,9 +501,10 @@ r.on 'todo', Integer do |id|
 end
 //}
 
-削除ページの表示、及び、実際に削除する処理の2つルーティングを追加しています。どちらも/todo/:idというパスから始まるようにするために、まず@<code>{on}メソッドでブランチ(ここから"todo"パスのルーティングになります、という宣言)を作成します。また、パラメータとしてTodoのIDが必須になるので、パラメータにIntegerの値がくることを宣言するように、@<code>{on}メソッドの引数に@<code>{Integer}を指定しています。
+削除ページの表示、及び、実際に削除する処理の2つルーティングを追加しています。どちらも/todo/:idというパスから始まるようにするために、まず@<code>{on}メソッドでブランチ@<fn>{branch}を作成します。また、パラメータとしてTodoのIDが必須になるので、パラメータにIntegerの値がくることを宣言するように、@<code>{on}メソッドの引数に@<code>{Integer}を指定しています。
+//footnote[branch][ここからtodoパスのルーティングになります、という宣言]
 
-あとは、/todo/:idにGETメソッドでアクセスしたら削除のページを表示するよう、/todo/:id/destroyにPOSTメソッドでアクセスしたら実際に削除処理を行うようにそれぞれしています。サーバ側の処理はこれで完了です。
+あとは、/todo/:idにGETメソッドでアクセスしたら削除のページを表示するよう、及び、/todo/:id/destroyにPOSTメソッドでアクセスしたら実際に削除処理を行うようにそれぞれしています。サーバ側の処理はこれで完了です。
 
 続けてview側です。まずは、views/index.erbに削除ページへのリンクを追加したいと思います。Todoの一覧を表示しているtableに、以下のようにaタグを追加してください。
 
@@ -524,7 +536,7 @@ end
       <td><span><%= @todo.deadline %></span></td>
     </tr>
   </table>
-  <input type='submit' name='delete' value='削除', class='btn btn-danger'>
+  <input type='submit' name='delete' value='削除' class='btn btn-danger'>
 </form>
 //}
 
@@ -532,9 +544,9 @@ end
 
 == JSON出力
 
-ここまでで、簡単なTodoアプリケーションが動くようになりました。実際動くアプリを書いてみての感想は色々あるかと思いますが、やはりRailsに比べるとviewを書くのが大変、と思われた方が多いのでは無いでしょうか? 筆者もそう思います。
+ここまでで、簡単なTodoアプリケーションが動くようになりました。Railsに比べるとviewを書くのが大分大変、と思われた方が多いのでは無いでしょうか。筆者もそうです。
 
-Sinatraの代替として使う分には良いかもしれませんが、やはりviewを書くのが大変だと、Railsの代わりに使いたい、と思う方は多くはいらっしゃらないと思います。
+Sinatraの代替として使う分には良いかもしれませんが、やはりviewを書くのが大変だと、Railsの代わりに使いたい、と思う方はあまりいないのではないかと思います。
 
 そこで、筆者が個人的にRodaが活躍出来るのではないかと思っているのは、API開発です。
 
@@ -542,11 +554,11 @@ Sinatraの代替として使う分には良いかもしれませんが、やは�
 
 そのような、単純にJSONでやりとりするだけのAPIサーバが必要な場合、RodaがRailsの代わりに使える可能性はあると筆者は考えています。
 
-もちろん、Railsの方が開発はしやすいでしょう。Railsに慣れていればなおのことだと思います。Rodaを使うことで、その慣れによる開発効率は失われてしましますが、代わりに性能という恩恵を受けることが出来ます。
+もちろん、Railsの方が開発はしやすいでしょう。Railsに慣れていればなおのことだと思います。Rodaを使うことで、その開発効率は失われてしましますが、代わりに性能という恩恵を受けることが出来ます。
 
 「 1.5 パフォーマンス 」で触れたTechEmpower社によるJSONレスポンスのベンチマーク結果によると、Roda + Sequelの組み合わせはRailsの実に5倍以上の性能を出しています。
 
-勿論、これはあくまでベンチマークであり、実際のアプリケーションでそこまでの差異が出るとは限りません。しかしRodaを使うことで速くなる可能性は間違いなくあるでしょう。最初Railsで開発していたが、性能が期待通りに出なそうなので、違う言語に変える、というようなケースがありましたら、是非Rodaについても検討してみてください。
+勿論、これはあくまでベンチマークであり、実際のアプリケーションでそこまでの差異が出るとは限りません。しかしRodaを使うことで速くなる可能性は間違いなくあるでしょう。最初Railsで開発していたが、性能が期待通りに出なそうなので違う言語に変える、というようなケースがありましたら、是非Rodaについても検討してみてください。
 
 という訳で、前置きが長くなりましたが、ここでは、簡単なJSON出力機能を追加してみようと思います。とはいえ、JSONのプラグインが提供されているので、そのプラグインの設定をするだけです。
 
@@ -566,9 +578,11 @@ class Todo < Sequel::Model
 end
 //}
 
-SequelもRodaと同様にプラグインシステムがあります@<fn>{sequel_plugin}。 JSONのシリアライズ処理用のプラグインも提供されているので、そのプラグインを読み込むようにしましょう。
+SequelもRodaと同様にプラグインシステムがあります@<fn>{sequel_plugin}。 JSONのシリアライズ処理用のプラグインも提供されているので、そのプラグインを読み込むようにしました。
 
-最後に、ルーティングの追加です。app.rbに追加しても良いのですが、折角multi_routeプラグインが読み込まれているので、JSONの出力処理については別のファイルに定義しようと思います。 まず、routes/prefix1.rbを適切な名前に変更しましょう。JSONを出力するためのルーティングなので、"api"という名前にします。
+最後に、ルーティングの追加です。app.rbに追加しても良いのですが、折角multi_routeプラグインが読み込まれているので、JSONの出力処理については別のファイルに定義しましょう。
+
+まず、routes/prefix1.rbを適切な名前に変更しましょう。JSONを出力するためのルーティングなので、api.rbという名前にします。
 
 //cmd{
 $ mv routes/prefix1.rb routes/api.rb
