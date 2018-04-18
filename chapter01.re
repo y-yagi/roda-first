@@ -4,8 +4,8 @@
 
 Rodaは、Jeremy Evans(@jeremyevans)@<fn>{jeremyevans}氏によって作られたライブラリです。Jeremy Evans氏は、データベースツールキットのSequel@<fn>{sequel}や、テンプレートエンジンのErubi@<fn>{erubi}の作者でもあります。特にErubiは、Rails 5.1からRails標準のテンプレートエンジンになっており、名前を聞いた事ある方も多いかもしれません。
 //footnote[jeremyevans][https://github.com/jeremyevans]
-//footnote[sequel][http://sequel.jeremyevans.net/]
-//footnote[erubi][https://github.com/jeremyevans/erubi]
+//footnote[sequel][RailsにおけるActive Record相当のライブラリ。O/Rマッパーやデータベースのマイグレーションの為の機能が提供されている。http://sequel.jeremyevans.net/]
+//footnote[erubi][ERBテンプレートを表示する為のテンプレートエンジン。https://github.com/jeremyevans/erubi]
 
 最初のバージョン(2014/07/30リリース)から現在まで、RodaはJeremy Evans氏個人によって開発が続けられています。
 
@@ -23,10 +23,12 @@ Ruby製で同様のライブラリだと、Sinatra@<fn>{sinatra}があります�
 
 早速ですが、まずはRodaにさわってみましょう。ここでは、よくある「Hello, World!」と表示するだけのウェブアプリケーションを作ろうと思います。
 
-まずは、Rodaをインストールしましょう。
+まずは、Rodaをインストールしましょう。なお、執筆時点で最新のバージョンである3.6.0を使用します。
 
 //cmd{
 $ gem install roda
+Successfully installed roda-3.6.0
+1 gem installed
 //}
 
 これで準備は完了です。では、実際にRodaを使ってみましょう。
@@ -45,18 +47,17 @@ class App < Roda
   end
 end
 
-
 run App.freeze.app
 //}
 
-ファイルが作成出来たら、ファイルがあるのと同じディレクトリで"rackup"コマンドを実行して、アプリケーションを起動してみましょう。
+ファイルが作成出来たら、ファイルがあるのと同じディレクトリでrackupコマンドを実行して、アプリケーションを起動してみましょう。
 
 //cmd{
 $ rackup
 //}
 
 
-最後に、ブラウザを起動し、"http://localhost:9292/"にアクセスしてくみてください。"Hello World!"と表示されれば成功です。簡単ですね。
+最後に、ブラウザを起動し、http://localhost:9292/にアクセスしてくみてください。"Hello World!"と表示されれば成功です。
 
 == SinatraとRoda
 
